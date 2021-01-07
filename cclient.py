@@ -6,15 +6,12 @@ from Crypto.Cipher import AES
 import random, string, base64
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
-#if len(sys.argv) != 3: 
-#	print ("Correct usage: script, IP address, port number") 
-#	exit() 
-    
-#IP_address = str(sys.argv[1]) 
-#Port = int(sys.argv[2]) 
 
-IP_address = '192.168.1.10'
-Port = 8081
+# bind socket with inputted ip and port
+#IP_address = '192.168.1.10'
+#Port = 8081
+IP_address = input('IP Address: ')
+Port = input('Port: ')
 server.connect((IP_address, Port)) 
 
 while True: 
@@ -35,7 +32,6 @@ while True:
                 key = message[:32]
                 iv = message[32:48]
                 message = message[48:]
-
                 decryption_suite = AES.new(key.encode('utf-8'), AES.MODE_CFB, iv.encode('utf-8'))
                 plain_text = decryption_suite.decrypt(base64.b64decode(message))
                 print('<Anonymous> ' + plain_text.decode('utf-8'))
