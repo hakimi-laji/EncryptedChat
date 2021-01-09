@@ -15,18 +15,19 @@ server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 #Port = 8081
 IP_address = input('IP Address: ')
 Port = input('Port: ')
+Port = int(Port)
 server.bind((IP_address, Port)) 
 
 # listens for 100 active connections. This number can be increased as per convenience. 
 server.listen(100) 
-print ("Waiting for connections...")
+print ("Server online. Waiting for connections...")
 
 list_of_clients = [] 
 
 def clientthread(conn, addr): 
 
 	# sends a message to the client whose user object is conn 
-	conn.send("Welcome to this chatroom!".encode('utf-8')) 
+	conn.send("Welcome to the secured chatroom. Press CTRL+C to exit anytime. Have fun!".encode('utf-8')) 
 
 	while True: 
 			try: 
@@ -34,7 +35,7 @@ def clientthread(conn, addr):
 				if message: 
 
 					# prints the message and address
-					print ("<" + addr[0] + "> " + message) 
+					print ("<" + addr[0] + "> " + message[48:]) 
 
 					# Calls broadcast function to send message to all 
 					#message_to_send = "<" + addr[0] + "> " + message 

@@ -4,6 +4,13 @@ import select
 import sys 
 from Crypto.Cipher import AES
 import random, string, base64
+import signal
+import sys
+
+# quit button
+def signal_handler(sig, frame):
+    print(' Exiting chat...DONE!')
+    sys.exit(0)
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
 
@@ -12,9 +19,11 @@ server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 #Port = 8081
 IP_address = input('IP Address: ')
 Port = input('Port: ')
+Port = int(Port)
 server.connect((IP_address, Port)) 
 
 while True: 
+
 
 	# maintains a list of possible input streams 
     sockets_list = [sys.stdin, server] 
@@ -35,8 +44,8 @@ while True:
                 decryption_suite = AES.new(key.encode('utf-8'), AES.MODE_CFB, iv.encode('utf-8'))
                 plain_text = decryption_suite.decrypt(base64.b64decode(message))
                 print('<Anonymous> ' + plain_text.decode('utf-8'))
-                
-                
+
+
         else: 
             messagetext = sys.stdin.readline()
             messageinput = messagetext.encode()
@@ -53,4 +62,6 @@ while True:
             sys.stdout.write("<You> " + messagetext) 
             sys.stdout.flush() 
 
+
+    signal.signal(signal.SIGINT, signal_handler)
 server.close() 
